@@ -5,15 +5,14 @@
 
 
 
-#define DHTPIN 7
-
-DHT dht(DHTPIN, DHTTYPE);
+const int DHT_PIN = 7;
+const int RELAY_PIN = 3;
+DHT dht(DHT_PIN, DHTTYPE);
 
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
-
-  pinMode(13, OUTPUT);
+  pinMode(RELAY_PIN, OUTPUT);
   dht.begin();
 }
 
@@ -36,35 +35,40 @@ void getHumidityTemp() {
   delay(1000);
 }
 
-void getSoilMoisture() {
+int getSoilMoisture() {
   // read the input on analog pin 0:
   int sensorValue = analogRead(A0);
   // print out the value you read:
-  Serial.print("Analog Value : ");
+  Serial.print("Soil Moisture Value : ");
   Serial.println(sensorValue);
-  delay(1000);        // delay in between reads for stability
+  return sensorValue;
 }
 
 void waterPlants() {
   //turn on pump
+  Serial.println("Watering Plants");
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
   getHumidityTemp();
   
-  getSoilMoisture();
+  int soilMoisture = getSoilMoisture();
 
-  //getSoilTemp();
-
-  /*if getSoilMoisture < threshold {
+  if (soilMoisture > 645) {
     waterPlants();
     //run sooner if watered
     delay(5000);
   } else {
     //wait normal time
+    Serial.println("DROWNING!!!");
     delay(10000);
-  } */
+  }
+
+
+
+
+  
 
   
 }
